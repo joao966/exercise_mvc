@@ -8,6 +8,9 @@
 </head>
 <body>
   <h1>Minha primeira view</h1>
-  <%=message  %>
+  <%names.forEach((name) => {%>
+    <p><%=name%></p>
+
+  <%})%>
 </body>
 </html>
