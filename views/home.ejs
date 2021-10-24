@@ -1,16 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <script src="http://localhost:4555/socket.io/socket.io.js"></script>
+  <title>View</title>
 </head>
 <body>
-  <h1>Minha primeira view</h1>
-  <%names.forEach((name) => {%>
-    <p><%=name%></p>
+  <h1><%=message%></h1>
+  <ul>
+    <%names.forEach((name) => {%>
+      <li><%=name%></li>
+  
+    <%})%>
+  </ul>
 
-  <%})%>
+  <ul id="socket"></ul>
+  <script>
+    const socket = window.io('http://localhost:4555');
+
+    socket.on('notification', (message) => {
+      const ul = document.getElementById('socket');
+
+      const li = document.createElement('li');
+      const text = document.createTextNode(message);
+      li.appendChild(text);
+      ul.appendChild(li);
+    })
+  </script>
+
+  <ul></ul>
+
 </body>
 </html>
