@@ -36,6 +36,7 @@ const post = (req, res) => {
   const {message} = req.body;
   names.push(message);
   io.emit('notification', message)
+  io.emit('event', names);
   res.status(200).json({ message: 'Post sucesefuld!' });
 };
 
@@ -56,5 +57,5 @@ app.listen(PORT, () => {
 });
 
 socketServer.listen(4555, () => {
-  console.log('sockt ta on')
+  console.log('socket ta on')
 })

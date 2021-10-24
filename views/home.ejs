@@ -15,8 +15,9 @@
   
     <%})%>
   </ul>
-
+  <br/>
   <ul id="socket"></ul>
+  <button id="button">Button</button>
   <script>
     const socket = window.io('http://localhost:4555');
 
@@ -28,9 +29,13 @@
       li.appendChild(text);
       ul.appendChild(li);
     })
+
+    socket.on('event', (alert) => {
+      const button =  document.getElementById('button')
+      button.addEventListener('click', () => {
+        console.log(alert)
+      })
+    });
   </script>
-
-  <ul></ul>
-
 </body>
 </html>
