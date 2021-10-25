@@ -9,10 +9,10 @@ const middlewares = require('./middlewares');
 
 const app = express();
 
-const socketServer = require('http').createServer();
+const socketServer = require('http').createServer(app);
 const io = require('socket.io')(socketServer, {
   cors: {
-    origin:'http://localhost:3000',
+    origin:'http://localhost:4555',
     methods: ['GET', 'POST']
   }
 });
@@ -30,6 +30,14 @@ app.use(
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+io.on('connection', (socket) => {
+  socket.on('input', (data) => {
+   io.emit('clientInput', data )
+  });
+})
+
+
 
 const names = [];
 const post = (req, res) => {
@@ -52,9 +60,9 @@ app.get('/home', front);
 
 app.use(middlewares.error);
 
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`App listening on port ${PORT}`);
+// });
 
 socketServer.listen(4555, () => {
   console.log('socket ta on')

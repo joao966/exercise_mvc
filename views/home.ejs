@@ -15,9 +15,14 @@
   
     <%})%>
   </ul>
+
   <br/>
+
   <ul id="socket"></ul>
+
   <button id="button">Button</button>
+  <input id='input' />
+
   <script>
     const socket = window.io('http://localhost:4555');
 
@@ -30,11 +35,24 @@
       ul.appendChild(li);
     })
 
-    socket.on('event', (alert) => {
-      const button =  document.getElementById('button')
-      button.addEventListener('click', () => {
-        console.log(alert)
-      })
+  
+    const button =  document.getElementById('button');
+    button.addEventListener('click', () => {
+      const value = document.getElementById('input').value;
+      console.log(value);
+      socket.emit('input', value);
+      document.getElementById('input').value = '';
+    })
+
+
+    socket.on('clientInput', (eventInput) => {
+      console.log(eventInput);
+      const ul = document.getElementById('socket');
+
+      const li = document.createElement('li');
+      const text = document.createTextNode(eventInput);
+      li.appendChild(text);
+      ul.appendChild(li);
     });
   </script>
 </body>
