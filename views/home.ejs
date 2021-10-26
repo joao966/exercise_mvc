@@ -20,8 +20,10 @@
 
   <ul id="socket"></ul>
 
-  <button id="button">Button</button>
+  <button id="button">Send</button>
+  <button id="count">Count</button>
   <input id='input' />
+  <h2 id="h2"><%=quantity%></h2>
 
   <script>
     const socket = window.io('http://localhost:4555');
@@ -39,7 +41,6 @@
     const button =  document.getElementById('button');
     button.addEventListener('click', () => {
       const value = document.getElementById('input').value;
-      console.log(value);
       socket.emit('input', value);
       document.getElementById('input').value = '';
     })
@@ -54,6 +55,21 @@
       li.appendChild(text);
       ul.appendChild(li);
     });
+
+    const ButtonCount =  document.getElementById('count');
+    ButtonCount.addEventListener('click', () => {
+      const value = 0;
+      socket.emit('count', value);
+    })
+
+    socket.on('countClient', (count) => {
+      console.log(count);
+      const h2 = document.getElementById('h2');
+      
+      h2.innerText = count;
+      // h2.innerText = '';
+    });
+
   </script>
 </body>
 </html>

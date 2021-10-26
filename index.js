@@ -31,25 +31,32 @@ app.use(
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+let quantity = 0;
 io.on('connection', (socket) => {
   socket.on('input', (data) => {
    io.emit('clientInput', data )
   });
+
+  socket.on('count', () => {
+    quantity++;
+    console.log(quantity)
+    io.emit('countClient', quantity)
+  });
 })
 
 
-
-const names = [];
+const names = ['João', 'Guiherme'];
 const post = (req, res) => {
   const {message} = req.body;
   names.push(message);
   io.emit('notification', message)
-  io.emit('event', names);
+  // io.emit('event', names);
   res.status(200).json({ message: 'Post sucesefuld!' });
 };
 
-const front = (_req, res) => {
+const front = async (_req, res) => {
   return res.render('home', {
+    quantity,
     names,
     message: 'minha primeira view',
   });
